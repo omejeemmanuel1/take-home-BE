@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-// import { loginUserSchema, options } from '../utils/utils';
+import { loginUserSchema, options } from '../utils/utils';
 import User from '../model/registerModel';
 
 const jwtSecret = process.env.JWT_SECRET_KEY as string;
@@ -11,11 +11,11 @@ export const Login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     // Validate with Joi
-    // const { error } = loginUserSchema.validate(req.body, options);
+    const { error } = loginUserSchema.validate(req.body, options);
 
-    // if (error) {
-    //   return res.status(400).json({ error: error.details.map((detail: { message: any; }) => detail.message) });
-    // }
+    if (error) {
+      return res.status(400).json({ error: error.details.map((detail: { message: any; }) => detail.message) });
+    }
 
     // Find user in the database
     const user = await User.findOne({
