@@ -51,23 +51,3 @@ export const register = async (req: Request, res: Response) => {
     return res.status(500).send('An error occurred, please try again');
   }
 };
-
-export const deleteAllUsers = async (req: Request, res: Response) => {
-  try {
-    // Delete all users and their associated products from the database
-    await User.destroy({
-      where: {
-        email: {
-          [Op.ne]: 'admin@yahoo.com', // Exclude the admin user from deletion
-        },
-      },
-      truncate: true,
-      cascade: true, // Enable cascading delete for associated products
-    });
-
-    return res.status(200).send('All users and their associated products have been deleted successfully');
-  } catch (err) {
-    console.log(err);
-    return res.status(500).send('An error occurred while deleting users and their associated products');
-  }
-};
